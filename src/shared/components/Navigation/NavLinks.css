@@ -24,9 +24,10 @@
   .nav-links a:hover,
   .nav-links a:active,
   .nav-links a.active {
-    background: #eff1f0;
+    background: rgb(153, 76, 216);
     border-color:rgb(153, 76, 216);
-    color: #140101;
+    border-width: 4px;
+    color: #f3eded;
     opacity: 70%;
     box-shadow: aliceblue;
   }

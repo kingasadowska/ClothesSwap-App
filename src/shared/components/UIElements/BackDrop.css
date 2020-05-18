@@ -1,0 +1,11 @@
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgb(153, 76, 216);
+    opacity: 1;
+    transition: opacity 1000ms;
+  }
+  
