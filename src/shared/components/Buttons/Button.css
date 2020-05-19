@@ -1,0 +1,45 @@
+.button {
+    font: inherit;
+    padding: 0.5rem 1.5rem;
+    border: 1px solid #ff4382;
+    border-radius: 4px;
+    background: #ff4382;
+    color: white;
+    cursor: pointer;
+    margin-right: 1rem;
+    text-decoration: none;
+    display: inline-block;
+  }
+  
+  .button:focus {
+    outline: none;
+  }
+  
+  .button:hover,
+  .button:active {
+    background: #f76998;
+    border-color: #f76998;
+  }
+  
+  .button--primary {
+    background: #cd86f7;
+    border: 1px solid rgb(144, 30, 219);
+  }
+  
+  .button--primary:hover,
+  .button--primary:active {
+    color: white;
+    background: #d9a9f5;
+    border: 1px solid #d9a9f5;
+  }
+  
+  .button--delete {
+    background: #8904d6;
+    border-color: white;
+  }
+  
+  .button--delete:hover,
+  .button--delete:active {
+    background: #d9a9f5;
+    border-color: #d9a9f5;
+  }

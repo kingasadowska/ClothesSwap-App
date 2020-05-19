@@ -1,6 +1,7 @@
 import React from 'react';
 import './ClothesItem.css';
-import Card from '../../shared/components/UIElements/Card';
+import Card from '../../shared/components/UIElements/Card'; 
+import Button from '../../shared/components/Buttons/Button';
 
 const ClothesItem = (props) => {
   return (
@@ -16,9 +17,9 @@ const ClothesItem = (props) => {
             <p>{props.description}</p>
         </div>
         <div className="clothes-item_actions">
-            <button>VIEW ON MAP</button>
-            <button>EDIT</button>
-            <button>DELETE</button>
+            <Button primary>VIEW ON MAP</Button>
+            <Button to={`/clothes/${props.id}`}>EDIT</Button>
+            <Button delete>DELETE</Button>
         </div>
       </Card>
     </li>

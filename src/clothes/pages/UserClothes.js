@@ -1,5 +1,6 @@
 import React from 'react';
 import ClothesList from '../components/ClothesList';
+import { useParams } from 'react-router-dom';
 
 const DUMMY_CLOTHES = [
  {
@@ -44,7 +45,9 @@ const DUMMY_CLOTHES = [
 ];
 
 const UserClothes = () => {
-    return <ClothesList items={DUMMY_CLOTHES} />;
+    const userId = useParams().userId;
+    const loadedClothes = DUMMY_CLOTHES.filter(clothes => clothes.creator === userId);
+    return <ClothesList items={loadedClothes} />;
 };
 
 export default UserClothes;
