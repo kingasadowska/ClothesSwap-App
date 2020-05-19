@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-d
 import Users from './user/pages/Users';
 import NewClothe from './clothes/pages/NewClothe';
 import NavBar from './shared/components/Navigation/NavBar';
+import UserClothes from './clothes/pages/UserClothes';
 
 const App = () => {
   return (
@@ -12,6 +13,9 @@ const App = () => {
       <Switch>
         <Route path="/" exact>
           <Users/>
+        </Route>
+        <Route path="/:userId/clothes" exact>
+          <UserClothes/>
         </Route>
         <Route path="/clothes/new" exact>
           <NewClothe/>

@@ -1,0 +1,8 @@
+.clothes-list {
+    list-style: none;
+    margin: 1rem auto;
+    padding: 10px;
+    width: 80%;
+    max-width: 30rem;
+  }
+  
