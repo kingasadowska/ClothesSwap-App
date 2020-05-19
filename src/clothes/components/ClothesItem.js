@@ -1,10 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './ClothesItem.css';
 import Card from '../../shared/components/UIElements/Card'; 
 import Button from '../../shared/components/Buttons/Button';
+import Modal from '../../shared/components/UIElements/Modal';
 
 const ClothesItem = (props) => {
+  const [openMap, setOpenMap] = useState(false);
+
+  const openMapHandler = () => setOpenMap(true);
+
+  const closeMapHandler = () => setOpenMap(false);
+  
   return (
+    <>
+    <Modal 
+      open={openMap} 
+      onClose={closeMapHandler} 
+      header="User localization" 
+      contentClass="place-item_modal-content"
+      footerClass="place-item_modal-actions"
+      footer={<Button onClick={closeMapHandler}>CLOSE</Button>}
+    >
+      <div className="map-container">
+        <h2>MAP</h2>
+      </div>
+    </Modal>
     <li className="clothes-item">
       <Card className="clothes-item_content">
         <div className="clothes-item_image">
@@ -17,12 +37,13 @@ const ClothesItem = (props) => {
             <p>{props.description}</p>
         </div>
         <div className="clothes-item_actions">
-            <Button primary>VIEW ON MAP</Button>
+            <Button primary onClick={openMapHandler}>PICK UP</Button>
             <Button to={`/clothes/${props.id}`}>EDIT</Button>
             <Button delete>DELETE</Button>
         </div>
       </Card>
     </li>
+    </>
  );
 };
 

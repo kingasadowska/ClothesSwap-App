@@ -38,5 +38,10 @@
   .clothes-item_actions a {
     margin: 0.8rem;
   }
+
+  .map-container {
+    height: 20rem;
+    width: 100%;
+  }
   
  
