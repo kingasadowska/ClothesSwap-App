@@ -3,6 +3,7 @@ import './ClothesItem.css';
 import Card from '../../shared/components/UIElements/Card'; 
 import Button from '../../shared/components/Buttons/Button';
 import Modal from '../../shared/components/UIElements/Modal';
+import Map from '../../shared/components/UIElements/Map';
 
 const ClothesItem = (props) => {
   const [openMap, setOpenMap] = useState(false);
@@ -22,7 +23,7 @@ const ClothesItem = (props) => {
       footer={<Button onClick={closeMapHandler}>CLOSE</Button>}
     >
       <div className="map-container">
-        <h2>MAP</h2>
+      <Map center={props.coordinates} zoom={17} />
       </div>
     </Modal>
     <li className="clothes-item">
