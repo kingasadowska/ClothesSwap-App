@@ -18,8 +18,8 @@ const ClothesItem = (props) => {
       open={openMap} 
       onClose={closeMapHandler} 
       header="User localization" 
-      contentClass="place-item_modal-content"
-      footerClass="place-item_modal-actions"
+      contentClass="clothes-item_modal-content"
+      footerClass="clothes-item_modal-actions"
       footer={<Button onClick={closeMapHandler}>CLOSE</Button>}
     >
       <div className="map-container">

@@ -4,6 +4,7 @@ import Users from './user/pages/Users';
 import NewClothe from './clothes/pages/NewClothe';
 import NavBar from './shared/components/Navigation/NavBar';
 import UserClothes from './clothes/pages/UserClothes';
+import UpdateClothes from './clothes/pages/UpdateClothes';
 
 const App = () => {
   return (
@@ -15,11 +16,14 @@ const App = () => {
           <Users/>
         </Route>
         <Route path="/:userId/clothes" exact>
-          <UserClothes/>
+        <UserClothes />
         </Route>
         <Route path="/clothes/new" exact>
           <NewClothe/>
         </Route>
+        <Route path="/clothes/:clothesId">
+            <UpdateClothes />
+          </Route>
         <Redirect to="/"/>
       </Switch>
     </main>

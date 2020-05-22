@@ -6,7 +6,7 @@ import {
   VALIDATOR_MINLENGTH,
   VALIDATOR_MAXLENGTH
 } from '../../shared/util/validators';
-import './NewClothe.css';
+import './ClothesForm.css';
 
 const formReducer = (state, action) => {
     switch (action.type) {
