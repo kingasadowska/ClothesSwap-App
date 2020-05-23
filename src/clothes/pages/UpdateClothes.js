@@ -4,9 +4,11 @@ import Input from '../../shared/components/Inputs/Input';
 import Button from '../../shared/components/Buttons/Button';
 import {
   VALIDATOR_REQUIRE,
-  VALIDATOR_MINLENGTH
+  VALIDATOR_MINLENGTH,
+  VALIDATOR_MAXLENGTH
 } from '../../shared/util/validators';
 import './ClothesForm.css';
+import { useForm } from '../../shared/hooks/form-hook';
 
 const DUMMY_CLOTHES = [
     {
@@ -55,16 +57,39 @@ const UpdateClothes = () => {
 
     const identifiedClothes = DUMMY_CLOTHES.find(p => p.id === clothesId);
 
-    if (!identifiedClothes) {
+    const [formState, inputHandler] = useForm(
+        {
+          title: {
+            value: identifiedClothes.title,
+            isValid: true
+          },
+          description: {
+            value: identifiedClothes.description,
+            isValid: true
+          },
+          size: {
+            value: identifiedClothes.size,
+            isValid: true
+          }
+        },
+        true
+      );
+    
+      const clothesUpdateSubmitHandler = event => {
+        event.preventDefault();
+        console.log(formState.inputs);
+      };
+
+      if (!identifiedClothes) {
         return (
-        <div className="center">
+          <div className="center">
             <h2>Could not find clothes!</h2>
-        </div>
+          </div>
         );
-    }
+      }
 
     return (
-        <form className="clothes-form">
+        <form className="clothes-form" onSubmit={clothesUpdateSubmitHandler}>
           <Input
             id="title"
             element="input"
@@ -72,9 +97,9 @@ const UpdateClothes = () => {
             label="Title"
             validators={[VALIDATOR_REQUIRE()]}
             errorText="Fill empty space."
-            onInput={() => {}}
-            value={identifiedClothes.title}
-            valid={true}
+            onInput={inputHandler}
+            initialValue={formState.inputs.title.value}
+            initialValid={formState.inputs.title.isValid}
           />
           <Input
             id="description"
@@ -82,11 +107,21 @@ const UpdateClothes = () => {
             label="Description"
             validators={[VALIDATOR_MINLENGTH(6)]}
             errorText="Enter description (min. 6 characters)."
-            onInput={() => {}}
-            value={identifiedClothes.description}
-            valid={true}
+            onInput={inputHandler}
+            initialValue={formState.inputs.description.value}
+            initialValid={formState.inputs.description.isValid}
           />
-          <Button type="submit" disabled={true}>
+          <Input
+            id="size"
+            element="text"
+            label="Size"
+            validators={[VALIDATOR_MAXLENGTH(2)]}
+            errorText="Enter size (XS-XXL)."
+            onInput={inputHandler}
+            initialValue={formState.inputs.size.value}
+            initialValid={formState.inputs.size.isValid}
+          />
+          <Button type="submit" disabled={!formState.isValid}>
             UPDATE PLACE
           </Button>
         </form>

@@ -1,4 +1,4 @@
-import React, { useCallback, useReducer } from 'react';
+import React from 'react';
 import Input from '../../shared/components/Inputs/Input';
 import Button from '../../shared/components/Buttons/Button';
 import {
@@ -6,35 +6,12 @@ import {
   VALIDATOR_MINLENGTH,
   VALIDATOR_MAXLENGTH
 } from '../../shared/util/validators';
+import { useForm } from '../../shared/hooks/form-hook';
 import './ClothesForm.css';
 
-const formReducer = (state, action) => {
-    switch (action.type) {
-      case 'INPUT_CHANGE':
-        let formIsValid = true;
-        for (const inputId in state.inputs) {
-          if (inputId === action.inputId) {
-            formIsValid = formIsValid && action.isValid;
-          } else {
-            formIsValid = formIsValid && state.inputs[inputId].isValid;
-          }
-        }
-        return {
-          ...state,
-          inputs: {
-            ...state.inputs,
-            [action.inputId]: { value: action.value, isValid: action.isValid }
-          },
-          isValid: formIsValid
-        };
-      default:
-        return state;
-    }
-  };
- 
 const NewClothe = () => {
-    const [formState, dispatch] = useReducer(formReducer, {
-        inputs: {
+    const [formState, inputHandler] = useForm(
+       {
           title: {
             value: '',
             isValid: false
@@ -48,22 +25,13 @@ const NewClothe = () => {
             isValid: false
           }
         },
-        isValid: false
-      });
-    
-      const inputHandler = useCallback((id, value, isValid) => {
-        dispatch({
-          type: 'INPUT_CHANGE',
-          value: value,
-          isValid: isValid,
-          inputId: id
-        });
-      }, []);
-   
-    const clothesSubmitHandler = event => {
-    event.preventDefault();
-    console.log(formState.inputs); // send to the backend
-    };
+        false
+      );
+
+      const clothesSubmitHandler = event => {
+        event.preventDefault();
+        console.log(formState.inputs); 
+      };    
 
 return (
     <form className="clothes-form" onSubmit={clothesSubmitHandler}>
