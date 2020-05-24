@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState }from 'react';
 import { useParams } from 'react-router-dom';
 import Input from '../../shared/components/Inputs/Input';
 import Button from '../../shared/components/Buttons/Button';
@@ -53,27 +53,50 @@ const DUMMY_CLOTHES = [
    ];
 
 const UpdateClothes = () => {
+    const [isLoading, setIsLoading] = useState(true);
+
     const clothesId = useParams().clothesId;
 
-    const identifiedClothes = DUMMY_CLOTHES.find(p => p.id === clothesId);
-
-    const [formState, inputHandler] = useForm(
-        {
-          title: {
-            value: identifiedClothes.title,
-            isValid: true
-          },
-          description: {
-            value: identifiedClothes.description,
-            isValid: true
-          },
-          size: {
-            value: identifiedClothes.size,
-            isValid: true
-          }
+    const [formState, inputHandler, setFormData] = useForm(
+      {
+        title: {
+          value: '',
+          isValid: false
         },
-        true
-      );
+        description: {
+          value: '',
+          isValid: false
+        },
+        size: {
+          value: '',
+          isValid: false
+        }
+      },
+      false
+    );
+  
+      const identifiedClothes = DUMMY_CLOTHES.find(p => p.id === clothesId);
+
+      useEffect(() => {
+        setFormData(
+          {
+            title: {
+              value: identifiedClothes.title,
+              isValid: true
+            },
+            description: {
+              value: identifiedClothes.description,
+              isValid: true
+            },
+            size: {
+              value: identifiedClothes.size,
+              isValid: true
+            }
+          },
+          true
+        );
+        setIsLoading(false);
+      }, [setFormData, identifiedClothes]);
     
       const clothesUpdateSubmitHandler = event => {
         event.preventDefault();
@@ -84,6 +107,14 @@ const UpdateClothes = () => {
         return (
           <div className="center">
             <h2>Could not find clothes!</h2>
+          </div>
+        );
+      }
+
+      if (isLoading) {
+        return (
+          <div className="center">
+            <h2>Loading</h2>
           </div>
         );
       }
@@ -122,7 +153,7 @@ const UpdateClothes = () => {
             initialValid={formState.inputs.size.isValid}
           />
           <Button type="submit" disabled={!formState.isValid}>
-            UPDATE PLACE
+            UPDATE CLOTHES
           </Button>
         </form>
       );
