@@ -7,6 +7,7 @@ import {
   VALIDATOR_MINLENGTH,
   VALIDATOR_MAXLENGTH
 } from '../../shared/util/validators';
+import Card from '../../shared/components/UIElements/Card';
 import './ClothesForm.css';
 import { useForm } from '../../shared/hooks/form-hook';
 
@@ -78,23 +79,25 @@ const UpdateClothes = () => {
       const identifiedClothes = DUMMY_CLOTHES.find(p => p.id === clothesId);
 
       useEffect(() => {
-        setFormData(
-          {
-            title: {
-              value: identifiedClothes.title,
-              isValid: true
+        if (identifiedClothes) {
+          setFormData(
+            {
+              title: {
+                value: identifiedClothes.title,
+                isValid: true
+              },
+              description: {
+                value: identifiedClothes.description,
+                isValid: true
+              },
+              size: {
+                value: identifiedClothes.size,
+                isValid: true
+              }
             },
-            description: {
-              value: identifiedClothes.description,
-              isValid: true
-            },
-            size: {
-              value: identifiedClothes.size,
-              isValid: true
-            }
-          },
-          true
-        );
+            true
+          );
+        }
         setIsLoading(false);
       }, [setFormData, identifiedClothes]);
     
@@ -106,7 +109,9 @@ const UpdateClothes = () => {
       if (!identifiedClothes) {
         return (
           <div className="center">
-            <h2>Could not find clothes!</h2>
+            <Card>
+              <h2>Could not find clothes!</h2>
+            </Card>
           </div>
         );
       }

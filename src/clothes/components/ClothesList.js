@@ -1,6 +1,7 @@
 import React from 'react';
 import './ClothesList.css';
 import Card from '../../shared/components/UIElements/Card';
+import Button from '../../shared/components/Buttons/Button';
 import ClothesItem from './ClothesItem';
 
 const ClothesList = props => {
@@ -9,7 +10,7 @@ const ClothesList = props => {
         <div className="clothes-list center">
             <Card>
                 <h2>No clothes. Add some.</h2>
-                <button> Share clothes</button>
+                <Button to="/clothes/new"> Share clothes</Button>
             </Card>
         </div>
       );
