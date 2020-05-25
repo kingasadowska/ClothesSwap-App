@@ -43,5 +43,19 @@
     height: 20rem;
     width: 100%;
   }
+
+  .clothes-item_modal-content {
+    padding: 0;
+  }
+  
+  .clothes-item_modal-actions {
+    text-align: right;
+  }
+
+  @media (min-width: 768px) {
+    .clothes-item_image {
+      height: 20rem;
+    } 
+  }
   
  
