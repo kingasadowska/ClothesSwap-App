@@ -6,6 +6,8 @@
   .form-control input,
   .form-control textarea {
     display: block;
+    text-align: left;
+    opacity: 90%;
   }
   
   .form-control label {
@@ -19,7 +21,9 @@
     font: inherit;
     border: 1px solid #ccc;
     background: #faf7f7;
-    padding: 0.20rem 0.30rem;
+    padding: 0.30rem 0.20rem;
+    opacity: 60%;
+    margin: 10px auto;
   }
   
   .form-control input:focus,

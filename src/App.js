@@ -5,6 +5,7 @@ import NewClothe from './clothes/pages/NewClothe';
 import NavBar from './shared/components/Navigation/NavBar';
 import UserClothes from './clothes/pages/UserClothes';
 import UpdateClothes from './clothes/pages/UpdateClothes';
+import Auth from './user/pages/Auth';
 
 const App = () => {
   return (
@@ -23,7 +24,10 @@ const App = () => {
         </Route>
         <Route path="/clothes/:clothesId">
             <UpdateClothes />
-          </Route>
+        </Route>
+        <Route path="/auth">
+            <Auth />
+        </Route>
         <Redirect to="/"/>
       </Switch>
     </main>

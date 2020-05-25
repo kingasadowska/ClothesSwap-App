@@ -1,0 +1,19 @@
+  .authentication {
+    width: 95%;
+    max-width: 30rem;
+    margin: 8rem auto;
+    text-align: center;
+  }
+  
+  .authentication form {
+    margin-bottom: 1rem;
+  }
+
+  .authentication h2 {
+    text-align: center;
+    color: #ff4382;
+    padding-bottom: 1rem;
+    padding-top: 1rem;
+    opacity: 90%;
+  }
+  
