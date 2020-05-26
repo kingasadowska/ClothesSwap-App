@@ -1,17 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import Card from '../../shared/components/UIElements/Card';
 import Input from '../../shared/components/Inputs/Input';
 import Button from '../../shared/components/Buttons/Button';
 import {
   VALIDATOR_EMAIL,
-  VALIDATOR_MINLENGTH
+  VALIDATOR_MINLENGTH,
+  VALIDATOR_REQUIRE
 } from '../../shared/util/validators';
 import { useForm } from '../../shared/hooks/form-hook';
 import './Auth.css';
 
 const Auth = () => {
-  const [formState, inputHandler] = useForm(
+  const [isLoginOption, setIsLoginOption] = useState(true);
+
+  const [formState, inputHandler, setFormData] = useForm(
     {
       email: {
         value: '',
@@ -25,6 +28,30 @@ const Auth = () => {
     false
   );
 
+  const switchOptionHandler = () => {
+    if (!isLoginOption) {
+      setFormData(
+        {
+          ...formState.inputs,
+          name: undefined
+        },
+        formState.inputs.email.isValid && formState.inputs.password.isValid
+      );
+    } else {
+      setFormData(
+        {
+          ...formState.inputs,
+          name: {
+            value: '',
+            isValid: false
+          }
+        },
+        false
+      );
+    }
+    setIsLoginOption(prevOption => !prevOption);
+  };
+
   const authSubmitHandler = event => {
     event.preventDefault();
     console.log(formState.inputs);
@@ -32,8 +59,19 @@ const Auth = () => {
 
   return (
     <Card className="authentication">
-      <h2>Login to your account</h2>
+      <h2>{isLoginOption ? 'Log in to your account' : 'Create new account'} </h2>
       <form onSubmit={authSubmitHandler}>
+      {!isLoginOption && (
+          <Input
+            element="input"
+            id="name"
+            type="text"
+            label="Name"
+            validators={[VALIDATOR_REQUIRE()]}
+            errorText="Enter a name."
+            onInput={inputHandler}
+          />
+        )}
         <Input className="auth"
           element="input"
           id="email"
@@ -53,9 +91,12 @@ const Auth = () => {
           onInput={inputHandler}
         />
         <Button type="submit" disabled={!formState.isValid}>
-          SIGN IN
+        {isLoginOption ? 'LOGIN' : 'REGISTER'}
         </Button>
       </form>
+      <Button inverse onClick={switchOptionHandler}>
+        SWITCH TO {isLoginOption ? 'REGISTER' : 'LOGIN'}
+      </Button>
     </Card>
   );
 };
