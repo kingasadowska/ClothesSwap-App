@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 
 import Card from '../../shared/components/UIElements/Card';
 import Input from '../../shared/components/Inputs/Input';
@@ -9,9 +9,12 @@ import {
   VALIDATOR_REQUIRE
 } from '../../shared/util/validators';
 import { useForm } from '../../shared/hooks/form-hook';
+import { AuthContext } from '../../shared/context/auth-context';
 import './Auth.css';
 
 const Auth = () => {
+  const auth = useContext(AuthContext);
+
   const [isLoginOption, setIsLoginOption] = useState(true);
 
   const [formState, inputHandler, setFormData] = useForm(
@@ -55,6 +58,7 @@ const Auth = () => {
   const authSubmitHandler = event => {
     event.preventDefault();
     console.log(formState.inputs);
+    auth.login();
   };
 
   return (
@@ -94,7 +98,7 @@ const Auth = () => {
         {isLoginOption ? 'LOGIN' : 'REGISTER'}
         </Button>
       </form>
-      <Button inverse onClick={switchOptionHandler}>
+      <Button onClick={switchOptionHandler}>
         SWITCH TO {isLoginOption ? 'REGISTER' : 'LOGIN'}
       </Button>
     </Card>

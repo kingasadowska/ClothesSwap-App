@@ -34,7 +34,7 @@
   
   .nav-links button:hover,
   .nav-links button:active {
-    background: #292929;
+    background: rgb(153, 76, 216);
     color: white;
   }
   
@@ -51,11 +51,10 @@
       color: white;
       text-decoration: none;
     }
-  
+
     .nav-links button {
-      border: 1px solid white;
+      border: 1px solid #cd86f7;
       color: white;
-      background: transparent;
     }
   }
   

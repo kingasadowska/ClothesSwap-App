@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import './ClothesItem.css';
 import Card from '../../shared/components/UIElements/Card'; 
 import Button from '../../shared/components/Buttons/Button';
 import Modal from '../../shared/components/UIElements/Modal';
 import Map from '../../shared/components/UIElements/Map';
+import { AuthContext } from '../../shared/context/auth-context';
 
 const ClothesItem = (props) => {
+  const auth = useContext(AuthContext);
+  
   const [openMap, setOpenMap] = useState(false);
 
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
@@ -74,8 +77,12 @@ const ClothesItem = (props) => {
           </div>
           <div className="clothes-item_actions">
               <Button primary onClick={openMapHandler}>PICK UP</Button>
-              <Button to={`/clothes/${props.id}`}>EDIT</Button>
-              <Button delete onClick={showDeleteWarningHandler}>DELETE</Button>
+              {auth.isAuthenticated && (
+                <Button to={`/clothes/${props.id}`}>EDIT</Button>
+              )}
+              {auth.isAuthenticated && (
+                <Button delete onClick={showDeleteWarningHandler}>DELETE</Button>
+              )}
           </div>
         </Card>
       </li>

@@ -9,40 +9,60 @@ import Auth from './user/pages/Auth';
 import { AuthContext } from './shared/context/auth-context';
 
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const login = useCallback(() => {
-    setIsLoggedIn(true);
+    setIsAuthenticated(true);
   }, []);
 
   const logout = useCallback(() => {
-    setIsLoggedIn(false);
+    setIsAuthenticated(false);
   }, []);
+
+  let routes;
+
+  if (isAuthenticated) {
+    routes = (
+      <Switch>
+        <Route path="/" exact>
+          <Users />
+        </Route>
+        <Route path="/:userId/clothes" exact>
+          <UserClothes />
+        </Route>
+        <Route path="/clothes/new" exact>
+          <NewClothe />
+        </Route>
+        <Route path="/clothes/:clothesId">
+          <UpdateClothes />
+        </Route>
+        <Redirect to="/" />
+      </Switch>
+    );
+  } else {
+    routes = (
+      <Switch>
+        <Route path="/" exact>
+          <Users />
+        </Route>
+        <Route path="/:userId/clothes" exact>
+          <UserClothes />
+        </Route>
+        <Route path="/auth">
+          <Auth />
+        </Route>
+        <Redirect to="/auth" />
+      </Switch>
+    );
+  }
 
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn: isLoggedIn, login: login, logout: logout }}>
+      value={{ isAuthenticated: isAuthenticated, login: login, logout: logout }}>
       <Router>
         <NavBar />
         <main>
-          <Switch>
-            <Route path="/" exact>
-              <Users/>
-            </Route>
-            <Route path="/:userId/clothes" exact>
-            <UserClothes />
-            </Route>
-            <Route path="/clothes/new" exact>
-              <NewClothe/>
-            </Route>
-            <Route path="/clothes/:clothesId">
-                <UpdateClothes />
-            </Route>
-            <Route path="/auth">
-                <Auth />
-            </Route>
-            <Redirect to="/"/>
-          </Switch>
+         {routes}
         </main>
       </Router>
     </AuthContext.Provider>
