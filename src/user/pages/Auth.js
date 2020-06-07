@@ -10,14 +10,16 @@ import {
 } from '../../shared/util/validators';
 import { useForm } from '../../shared/hooks/form-hook';
 import { AuthContext } from '../../shared/context/auth-context';
+import Spinner from '../../shared/components/UIElements/Spinner';
 import './Auth.css';
 
 const Auth = () => {
   const auth = useContext(AuthContext);
   
   const [isLoginMode, setIsLoginMode] = useState(true);
-
   const [isLoginOption, setIsLoginOption] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
 
   const [formState, inputHandler, setFormData] = useForm(
     {
@@ -63,6 +65,7 @@ const Auth = () => {
     if (isLoginMode) {
     } else {
       try {
+        setIsLoading(true);
         const response = await fetch('http://localhost:5000/api/users/signup', {
           method: 'POST',
           headers: {
@@ -76,17 +79,22 @@ const Auth = () => {
         });
 
         const responseData = await response.json();
+        if (!response.ok) {
+          throw new Error(responseData.message);
+        }
         console.log(responseData);
+        setIsLoading(false);
+        auth.login();
       } catch (err) {
-        console.log(err);
+        setIsLoading(false);
+        setError(err.message || 'Error, please try again.');
       }
     }
-
-    auth.login();
   };
 
   return (
     <Card className="authentication">
+         <Spinner asOverlay />
       <h2>{isLoginOption ? 'Log in to your account' : 'Create new account'} </h2>
       <form onSubmit={authSubmitHandler}>
       {!isLoginOption && (
