@@ -11,6 +11,7 @@ import {
 import { useForm } from '../../shared/hooks/form-hook';
 import { AuthContext } from '../../shared/context/auth-context';
 import Spinner from '../../shared/components/UIElements/Spinner';
+import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import './Auth.css';
 
 const Auth = () => {
@@ -92,9 +93,16 @@ const Auth = () => {
     }
   };
 
+  const errorHandler = () => {
+    setError(null);
+  };
+
+
   return (
+    <>
+    <ErrorModal error={error} onClear={errorHandler} />
     <Card className="authentication">
-         <Spinner asOverlay />
+         {isLoading && <Spinner asOverlay />}
       <h2>{isLoginOption ? 'Log in to your account' : 'Create new account'} </h2>
       <form onSubmit={authSubmitHandler}>
       {!isLoginOption && (
@@ -134,6 +142,7 @@ const Auth = () => {
         SWITCH TO {isLoginOption ? 'REGISTER' : 'LOGIN'}
       </Button>
     </Card>
+    </>
   );
 };
 
