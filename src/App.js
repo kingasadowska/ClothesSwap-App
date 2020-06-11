@@ -10,13 +10,16 @@ import { AuthContext } from './shared/context/auth-context';
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userId, setUserId] = useState(false);
 
-  const login = useCallback(() => {
+  const login = useCallback((uid) => {
     setIsAuthenticated(true);
+    setUserId(uid);
   }, []);
 
   const logout = useCallback(() => {
     setIsAuthenticated(false);
+    setUserId(null);
   }, []);
 
   let routes;
@@ -58,7 +61,7 @@ const App = () => {
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated: isAuthenticated, login: login, logout: logout }}>
+      value={{ isAuthenticated: isAuthenticated, login: login, logout: logout, userId: userId }}>
       <Router>
         <NavBar />
         <main>

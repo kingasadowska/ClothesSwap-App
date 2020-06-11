@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useContext} from 'react';
+import { useHistory } from 'react-router-dom';
 import Input from '../../shared/components/Inputs/Input';
 import Button from '../../shared/components/Buttons/Button';
 import {
@@ -6,11 +7,17 @@ import {
   VALIDATOR_MINLENGTH,
   VALIDATOR_MAXLENGTH
 } from '../../shared/util/validators';
+import Spinner from '../../shared/components/UIElements/Spinner';
+import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import { useForm } from '../../shared/hooks/form-hook';
+import { useHttpClient } from '../../shared/hooks/http-hook';
+import { AuthContext } from '../../shared/context/auth-context';
 import './ClothesForm.css';
 
 const NewClothe = () => {
-    const [formState, inputHandler] = useForm(
+  const auth = useContext(AuthContext);
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const [formState, inputHandler] = useForm(
        {
           title: {
             value: '',
@@ -28,13 +35,31 @@ const NewClothe = () => {
         false
       );
 
-      const clothesSubmitHandler = event => {
+      const history = useHistory();
+
+      const clothesSubmitHandler = async event => {
         event.preventDefault();
-        console.log(formState.inputs); 
-      };    
+        try {
+          await sendRequest(
+            'http://localhost:5000/api/places',
+            'POST',
+            JSON.stringify({
+              title: formState.inputs.title.value,
+              description: formState.inputs.description.value,
+              size: formState.inputs.size.value,
+              creator: auth.userId
+            }),
+            { 'Content-Type': 'application/json' }
+          );
+          history.push('/');
+        } catch (err) {}
+      }; 
 
 return (
+  <>
+   <ErrorModal error={error} onClear={clearError} />
     <form className="clothes-form" onSubmit={clothesSubmitHandler}>
+    {isLoading && <Spinner asOverlay />}
       <Input
         id="title"
         element="input"
@@ -64,6 +89,7 @@ return (
         ADD
       </Button>
     </form>
+    </>
   );
 };
 
