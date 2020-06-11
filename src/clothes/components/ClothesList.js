@@ -21,7 +21,7 @@ const ClothesList = props => {
          <ClothesItem
             key={clothes.id}
             id={clothes.id}
-            image={clothes.imageUrl}
+            image={clothes.image}
             title={clothes.title}
             description={clothes.description}
             size={clothes.size}
