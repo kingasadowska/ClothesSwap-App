@@ -1,5 +1,5 @@
-import React, { useEffect, useState }from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState, useContext } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
 import Input from '../../shared/components/Inputs/Input';
 import Button from '../../shared/components/Buttons/Button';
 import {
@@ -9,54 +9,19 @@ import {
 } from '../../shared/util/validators';
 import Card from '../../shared/components/UIElements/Card';
 import './ClothesForm.css';
+import Spinner from '../../shared/components/UIElements/Spinner';
+import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import { useForm } from '../../shared/hooks/form-hook';
-
-const DUMMY_CLOTHES = [
-    {
-       id: 'p1',
-       title: 'Dress',
-       description: 'short yellow',
-       imageUrl: 'https://content.asos-media.com/-/media/homepages/ww/2020/05/11/ww_global_mobile-hero_1650-x-1884_4th-may.jpg',
-       size: 'S',
-       price: '15 $',
-       location: {
-           lat: 40.7484405,
-           lng: -73.9878584
-         },
-       creator: 'u1'
-    },
-    {
-       id: 'p2',
-       title: 'Dress',
-       description: 'long green',
-       imageUrl: 'https://www.pronovias.com/media/wysiwyg/2021/05/Homepage/the-party-edit-ss2020-pronovias-m_2x.jpg',
-       size: 'S',
-       price: '40 $',
-       location: {
-           lat: 40.7484405,
-           lng: -73.9878584
-       },
-       creator: 'u2'
-    },
-    {
-       id: 'p3',
-       title: 'Dress',
-       description: 'mid red',
-       imageUrl: 'https://cdn.shopify.com/s/files/1/0074/5124/6676/products/053203826649-60-0.jpg?v=1587421343',
-       size: 'S',
-       price: '10 $',
-       location: {
-           lat: 40.7484405,
-           lng: -73.9878584
-       },
-       creator: 'u3'
-    }
-   ];
+import { useHttpClient } from '../../shared/hooks/http-hook';
+import { AuthContext } from '../../shared/context/auth-context';
 
 const UpdateClothes = () => {
-    const [isLoading, setIsLoading] = useState(true);
+    const auth = useContext(AuthContext);
+    const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
+    const [loadedClothes, setLoadedClothes] = useState();
     const clothesId = useParams().clothesId;
+    const history = useHistory();
 
     const [formState, inputHandler, setFormData] = useForm(
       {
@@ -75,56 +40,73 @@ const UpdateClothes = () => {
       },
       false
     );
-  
-      const identifiedClothes = DUMMY_CLOTHES.find(p => p.id === clothesId);
 
       useEffect(() => {
-        if (identifiedClothes) {
-          setFormData(
-            {
-              title: {
-                value: identifiedClothes.title,
-                isValid: true
+        const fetchClothes = async () => {
+          try {
+            const responseData = await sendRequest(
+              `http://localhost:5000/api/clothes/${clothesId}`
+            );
+            setLoadedClothes(responseData.clothes);
+            setFormData(
+              {
+                title: {
+                  value: responseData.clothes.title,
+                  isValid: true
+                },
+                description: {
+                  value: responseData.clothes.description,
+                  isValid: true
+                }
               },
-              description: {
-                value: identifiedClothes.description,
-                isValid: true
-              },
-              size: {
-                value: identifiedClothes.size,
-                isValid: true
-              }
-            },
-            true
-          );
-        }
-        setIsLoading(false);
-      }, [setFormData, identifiedClothes]);
+              true
+            );
     
-      const clothesUpdateSubmitHandler = event => {
+          } catch (err) {}
+        };
+        fetchClothes();
+      }, [sendRequest, clothesId, setFormData]);
+    
+      const clothesUpdateSubmitHandler = async event => {
         event.preventDefault();
-        console.log(formState.inputs);
+        try {
+          await sendRequest(
+            `http://localhost:5000/api/clothes/${clothesId}`,
+            'PATCH',
+            JSON.stringify({
+              title: formState.inputs.title.value,
+              description: formState.inputs.description.value
+            }),
+            {
+              'Content-Type': 'application/json'
+            }
+          );
+          history.push('/' + auth.userId + '/clothess');
+        } catch (err) {}
       };
-
-      if (!identifiedClothes) {
-        return (
-          <div className="center">
-            <Card>
-              <h2>Could not find clothes!</h2>
-            </Card>
-          </div>
-        );
-      }
 
       if (isLoading) {
         return (
           <div className="center">
-            <h2>Loading</h2>
+              <Spinner />
+          </div>
+        );
+      }
+
+      if (!loadedClothes && !error) {
+        return (
+          <div className="center">
+            <Card>
+          <h2>Could not find clothes!</h2>
+        </Card>
           </div>
         );
       }
 
     return (
+      <>
+      <ErrorModal error={error} onClear={clearError} />
+      {!isLoading && loadedClothes && (
         <form className="clothes-form" onSubmit={clothesUpdateSubmitHandler}>
           <Input
             id="title"
@@ -161,7 +143,8 @@ const UpdateClothes = () => {
             UPDATE CLOTHES
           </Button>
         </form>
-      );
-    };
-
+       )}
+       </>
+     );
+   };
 export default UpdateClothes;
