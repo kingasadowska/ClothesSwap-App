@@ -28,6 +28,7 @@ const ClothesList = props => {
             price={clothes.price}
             creatorId={clothes.creator}
             coordinates={clothes.location}
+            onDelete={props.onDeleteClothes}
             />
         ))}
     </ul>

@@ -23,6 +23,12 @@ const UserClothes = () => {
         fetchClothes();
       }, [sendRequest, userId]);
 
+      const deletedClothesHandler = deletedClothesId => {
+        setLoadedClothes(prevClothes =>
+          prevClothes.filter(clothes => clothes.id !== deletedClothesId)
+        );
+      };
+
     return (
         <React.Fragment>
         <ErrorModal error={error} onClear={clearError} />
@@ -31,7 +37,8 @@ const UserClothes = () => {
             <Spinner />
             </div>
         )}
-        {!isLoading && loadedClothes && <ClothesList items={loadedClothes} />}
+        {!isLoading && loadedClothes && 
+        (<ClothesList items={loadedClothes} onDeletePlace={deletedClothesHandler}/>)}
         </React.Fragment>
   );
 };

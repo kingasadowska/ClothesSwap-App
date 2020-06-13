@@ -4,13 +4,15 @@ import Card from '../../shared/components/UIElements/Card';
 import Button from '../../shared/components/Buttons/Button';
 import Modal from '../../shared/components/UIElements/Modal';
 import Map from '../../shared/components/UIElements/Map';
+import ErrorModal from '../../shared/components/UIElements/ErrorModal';
+import Spinner from '../../shared/components/UIElements/Spinner';
 import { AuthContext } from '../../shared/context/auth-context';
+import { useHttpClient } from '../../shared/hooks/http-hook';
 
 const ClothesItem = (props) => {
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const auth = useContext(AuthContext);
-  
   const [openMap, setOpenMap] = useState(false);
-
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
 
   const openMapHandler = () => setOpenMap(true);
@@ -25,47 +27,55 @@ const ClothesItem = (props) => {
     setOpenConfirmModal(false);
   };
 
-  const confirmDeleteHandler = () => {
+  const confirmDeleteHandler = async () => {
     setOpenConfirmModal(false);
-    console.log('DELETING');
+    try {
+      await sendRequest(
+        `http://localhost:5000/api/clothes/${props.id}`,
+        'DELETE'
+      );
+      props.onDelete(props.id);
+    } catch (err) {}
   };
   
   return (
     <>
-    <Modal 
-      open={openMap} 
-      onClose={closeMapHandler} 
-      header="User localization" 
-      contentClass="clothes-item_modal-content"
-      footerClass="clothes-item_modal-actions"
-      footer={<Button onClick={closeMapHandler}>CLOSE</Button>}
-    >
-      <div className="map-container">
-      <Map center={props.coordinates} zoom={17} />
-      </div>
-    </Modal>
-    <Modal
-        show={openConfirmModal}
-        onCancel={cancelDeleteHandler}
-        header="Are you sure to delete this item??"
+      <ErrorModal error={error} onClear={clearError} />
+      <Modal 
+        open={openMap} 
+        onClose={closeMapHandler} 
+        header="User localization" 
+        contentClass="clothes-item_modal-content"
         footerClass="clothes-item_modal-actions"
-        footer={
-          <>
-            <Button primary onClick={cancelDeleteHandler}>
-              CANCEL
-            </Button>
-            <Button delete onClick={confirmDeleteHandler}>
-              DELETE
-            </Button>
-          </>
-        }
+        footer={<Button onClick={closeMapHandler}>CLOSE</Button>}
       >
-        <p>
-          Do you want to proceed and delete this clothes?
-        </p>
+        <div className="map-container">
+        <Map center={props.coordinates} zoom={17} />
+        </div>
       </Modal>
+      <Modal
+          show={openConfirmModal}
+          onCancel={cancelDeleteHandler}
+          header="Are you sure to delete this item??"
+          footerClass="clothes-item_modal-actions"
+          footer={
+            <>
+              <Button primary onClick={cancelDeleteHandler}>
+                CANCEL
+              </Button>
+              <Button delete onClick={confirmDeleteHandler}>
+                DELETE
+              </Button>
+            </>
+          }
+        >
+          <p>
+            Do you want to proceed and delete this clothes?
+          </p>
+        </Modal>
       <li className="clothes-item">
         <Card className="clothes-item_content">
+        {isLoading && <Spinner asOverlay />}
           <div className="clothes-item_image">
               <img src={props.image} alt={props.title} />
           </div>
