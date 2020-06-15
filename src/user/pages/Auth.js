@@ -13,6 +13,7 @@ import { useHttpClient } from '../../shared/hooks/http-hook';
 import { AuthContext } from '../../shared/context/auth-context';
 import Spinner from '../../shared/components/UIElements/Spinner';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
+import UploadImg from '../../shared/components/UIElements/UploadImg';
 import './Auth.css';
 
 const Auth = () => {
@@ -117,6 +118,7 @@ const Auth = () => {
             onInput={inputHandler}
           />
         )}
+        {!isLoginOption && <UploadImg center id="image" />}
         <Input className="auth"
           element="input"
           id="email"
