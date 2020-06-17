@@ -29,14 +29,18 @@ const UpdateClothes = () => {
           value: '',
           isValid: false
         },
+        size: {
+          value: '',
+          isValid: false
+        },
+        price: {
+          value: '',
+          isValid: false
+        },
         description: {
           value: '',
           isValid: false
         },
-        size: {
-          value: '',
-          isValid: false
-        }
       },
       false
     );
@@ -52,6 +56,14 @@ const UpdateClothes = () => {
               {
                 title: {
                   value: responseData.clothes.title,
+                  isValid: true
+                },
+                size: {
+                  value: responseData.clothes.size,
+                  isValid: true
+                },
+                price: {
+                  value: responseData.clothes.price,
                   isValid: true
                 },
                 description: {
@@ -75,13 +87,15 @@ const UpdateClothes = () => {
             'PATCH',
             JSON.stringify({
               title: formState.inputs.title.value,
+              size: formState.inputs.size.value,
+              price: formState.inputs.price.value,
               description: formState.inputs.description.value
             }),
             {
               'Content-Type': 'application/json'
             }
           );
-          history.push('/' + auth.userId + '/clothess');
+          history.push('/' + auth.userId + '/clothes');
         } catch (err) {}
       };
 
@@ -120,16 +134,6 @@ const UpdateClothes = () => {
             initialValid={formState.inputs.title.isValid}
           />
           <Input
-            id="description"
-            element="textarea"
-            label="Description"
-            validators={[VALIDATOR_MINLENGTH(6)]}
-            errorText="Enter description (min. 6 characters)."
-            onInput={inputHandler}
-            initialValue={formState.inputs.description.value}
-            initialValid={formState.inputs.description.isValid}
-          />
-          <Input
             id="size"
             element="text"
             label="Size"
@@ -138,6 +142,26 @@ const UpdateClothes = () => {
             onInput={inputHandler}
             initialValue={formState.inputs.size.value}
             initialValid={formState.inputs.size.isValid}
+          />
+          <Input
+            id="price"
+            element="text"
+            label="price"
+            validators={[VALIDATOR_MAXLENGTH(2)]}
+            errorText="Enter price."
+            onInput={inputHandler}
+            initialValue={formState.inputs.price.value}
+            initialValid={formState.inputs.price.isValid}
+          />
+          <Input
+            id="description"
+            element="textarea"
+            label="Description"
+            validators={[VALIDATOR_MINLENGTH(6)]}
+            errorText="Enter description (min. 6 characters)."
+            onInput={inputHandler}
+            initialValue={formState.inputs.description.value}
+            initialValid={formState.inputs.description.isValid}
           />
           <Button type="submit" disabled={!formState.isValid}>
             UPDATE CLOTHES

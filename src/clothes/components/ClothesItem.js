@@ -44,7 +44,7 @@ const ClothesItem = (props) => {
       <Modal 
         open={openMap} 
         onClose={closeMapHandler} 
-        header="User localization" 
+        header={props.address}
         contentClass="clothes-item_modal-content"
         footerClass="clothes-item_modal-actions"
         footer={<Button onClick={closeMapHandler}>CLOSE</Button>}
@@ -84,6 +84,7 @@ const ClothesItem = (props) => {
               <h2>{props.size}</h2>
               <p>{props.price}</p>
               <p>{props.description}</p>
+              <h2>{props.address}</h2>
           </div>
           <div className="clothes-item_actions">
               <Button primary onClick={openMapHandler}>PICK UP</Button>

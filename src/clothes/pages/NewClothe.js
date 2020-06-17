@@ -23,11 +23,19 @@ const NewClothe = () => {
             value: '',
             isValid: false
           },
+          size: {
+            value: '',
+            isValid: false
+          },
+          price: {
+            value: '',
+            isValid: false
+          },
           description: {
             value: '',
             isValid: false
           },
-          size: {
+          address: {
             value: '',
             isValid: false
           }
@@ -41,12 +49,14 @@ const NewClothe = () => {
         event.preventDefault();
         try {
           await sendRequest(
-            'http://localhost:5000/api/places',
+            'http://localhost:5000/api/clothes',
             'POST',
             JSON.stringify({
               title: formState.inputs.title.value,
-              description: formState.inputs.description.value,
               size: formState.inputs.size.value,
+              price: formState.inputs.price.value,
+              description: formState.inputs.description.value,
+              address: formState.inputs.address.value,
               creator: auth.userId
             }),
             { 'Content-Type': 'application/json' }
@@ -70,14 +80,6 @@ return (
         onInput={inputHandler}
       />
        <Input
-        id="description"
-        element="textarea"
-        label="Description"
-        validators={[VALIDATOR_MINLENGTH(6)]}
-        errorText="Enter description."
-        onInput={inputHandler}
-      />
-        <Input
         id="size"
         element="input"
         label="Size"
@@ -85,6 +87,30 @@ return (
         errorText="Enter size (XS-XXL)."
         onInput={inputHandler}
       />
+       <Input
+        id="price"
+        element="input"
+        label="Price"
+        validators={[VALIDATOR_REQUIRE()]}
+        errorText="Enter price."
+        onInput={inputHandler}
+      />
+       <Input
+        id="description"
+        element="textarea"
+        label="Description"
+        validators={[VALIDATOR_MINLENGTH(6)]}
+        errorText="Enter description."
+        onInput={inputHandler}
+      />
+      <Input
+          id="address"
+          element="input"
+          label="Address"
+          validators={[VALIDATOR_REQUIRE()]}
+          errorText="Please enter address."
+          onInput={inputHandler}
+        />
       <Button type="submit" disabled={!formState.isValid}>
         ADD
       </Button>
