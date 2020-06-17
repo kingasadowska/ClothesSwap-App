@@ -19,7 +19,7 @@ const UpdateClothes = () => {
     const auth = useContext(AuthContext);
     const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
-    const [loadedClothes, setLoadedClothes] = useState();
+    const [loadedClothes, setLoadedClothe] = useState();
     const clothesId = useParams().clothesId;
     const history = useHistory();
 
@@ -51,23 +51,23 @@ const UpdateClothes = () => {
             const responseData = await sendRequest(
               `http://localhost:5000/api/clothes/${clothesId}`
             );
-            setLoadedClothes(responseData.clothes);
+            setLoadedClothe(responseData.clothe);
             setFormData(
               {
                 title: {
-                  value: responseData.clothes.title,
+                  value: responseData.clothe.title,
                   isValid: true
                 },
                 size: {
-                  value: responseData.clothes.size,
+                  value: responseData.clothe.size,
                   isValid: true
                 },
                 price: {
-                  value: responseData.clothes.price,
+                  value: responseData.clothe.price,
                   isValid: true
                 },
                 description: {
-                  value: responseData.clothes.description,
+                  value: responseData.clothe.description,
                   isValid: true
                 }
               },
@@ -147,7 +147,7 @@ const UpdateClothes = () => {
             id="price"
             element="text"
             label="price"
-            validators={[VALIDATOR_MAXLENGTH(2)]}
+            validators={[VALIDATOR_REQUIRE()]}
             errorText="Enter price."
             onInput={inputHandler}
             initialValue={formState.inputs.price.value}

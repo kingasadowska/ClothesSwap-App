@@ -17,18 +17,18 @@ const ClothesList = props => {
     }
     return (
     <ul className="clothes-list">
-       {props.items.map(clothes => (
+       {props.items.map(clothe => (
          <ClothesItem
-            key={clothes.id}
-            id={clothes.id}
-            image={clothes.image}
-            title={clothes.title}
-            description={clothes.description}
-            size={clothes.size}
-            price={clothes.price}
-            address={clothes.address}
-            creatorId={clothes.creator}
-            coordinates={clothes.location}
+            key={clothe.id}
+            id={clothe.id}
+            image={clothe.image}
+            title={clothe.title}
+            description={clothe.description}
+            size={clothe.size}
+            price={clothe.price}
+            address={clothe.address}
+            creatorId={clothe.creator}
+            coordinates={clothe.location}
             onDelete={props.onDeleteClothes}
             />
         ))}

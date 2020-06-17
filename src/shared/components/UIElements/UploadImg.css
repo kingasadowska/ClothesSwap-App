@@ -2,20 +2,20 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  flex-direction: column;
   align-items: center;
 }
 
-.upload-img {
+.upload-img_prev {
   width: 12rem;
   height: 12rem;
   display: flex;
-  border: 1px solid rgba(209, 206, 206, 0.966);
+  border: 1px solid #CB9FED;
   justify-content: center;
   margin-bottom: 1rem;
   justify-content: center;
   align-items: center;
   text-align: center;
+  background-color: #CB9FED;
 }
 
 .upload-img img {

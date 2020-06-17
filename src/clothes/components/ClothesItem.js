@@ -88,10 +88,10 @@ const ClothesItem = (props) => {
           </div>
           <div className="clothes-item_actions">
               <Button primary onClick={openMapHandler}>PICK UP</Button>
-              {auth.isAuthenticated && (
+              {auth.userId === props.creatorId && (
                 <Button to={`/clothes/${props.id}`}>EDIT</Button>
               )}
-              {auth.isAuthenticated && (
+              {auth.userId === props.creatorId && (
                 <Button delete onClick={showDeleteWarningHandler}>DELETE</Button>
               )}
           </div>

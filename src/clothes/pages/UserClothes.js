@@ -25,7 +25,7 @@ const UserClothes = () => {
 
       const deletedClothesHandler = deletedClothesId => {
         setLoadedClothes(prevClothes =>
-          prevClothes.filter(clothes => clothes.id !== deletedClothesId)
+          prevClothes.filter(clothe => clothe.id !== deletedClothesId)
         );
       };
 
@@ -38,7 +38,7 @@ const UserClothes = () => {
             </div>
         )}
         {!isLoading && loadedClothes && 
-        (<ClothesList items={loadedClothes} onDeletePlace={deletedClothesHandler}/>)}
+        (<ClothesList items={loadedClothes} onDeleteClothes={deletedClothesHandler}/>)}
         </React.Fragment>
   );
 };

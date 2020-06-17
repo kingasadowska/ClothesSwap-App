@@ -41,7 +41,8 @@ const Auth = () => {
       setFormData(
         {
           ...formState.inputs,
-          name: undefined
+          name: undefined,
+          image: undefined
         },
         formState.inputs.email.isValid && formState.inputs.password.isValid
       );
@@ -51,6 +52,10 @@ const Auth = () => {
           ...formState.inputs,
           name: {
             value: '',
+            isValid: false
+          },
+          image: {
+            value: null,
             isValid: false
           }
         },
@@ -62,6 +67,8 @@ const Auth = () => {
 
   const authSubmitHandler = async event => {
     event.preventDefault();
+
+    console.log(formState.inputs);
 
     if (isLoginOption) {
       try {
@@ -103,7 +110,6 @@ const Auth = () => {
     <ErrorModal error={error} onClear={clearError} />
     <Card className="authentication">
          {isLoading && <Spinner asOverlay />}
-      <h2>{isLoginOption ? 'Log in' : 'Register'} </h2>
       <h2>Login Required</h2>
         <hr />
       <form onSubmit={authSubmitHandler}>
@@ -118,7 +124,9 @@ const Auth = () => {
             onInput={inputHandler}
           />
         )}
-        {!isLoginOption && <UploadImg center id="image" />}
+        {!isLoginOption && (
+        <UploadImg center id="image" onInput={inputHandler}/>
+        )}
         <Input className="auth"
           element="input"
           id="email"
