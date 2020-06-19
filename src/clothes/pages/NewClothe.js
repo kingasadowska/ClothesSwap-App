@@ -12,6 +12,7 @@ import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import { useForm } from '../../shared/hooks/form-hook';
 import { useHttpClient } from '../../shared/hooks/http-hook';
 import { AuthContext } from '../../shared/context/auth-context';
+import UploadImg from '../../shared/components/UIElements/UploadImg';
 import './ClothesForm.css';
 
 const NewClothe = () => {
@@ -38,6 +39,10 @@ const NewClothe = () => {
           address: {
             value: '',
             isValid: false
+          },
+          image: {
+            value: null,
+            isValid: false
           }
         },
         false
@@ -48,19 +53,15 @@ const NewClothe = () => {
       const clothesSubmitHandler = async event => {
         event.preventDefault();
         try {
-          await sendRequest(
-            'http://localhost:5000/api/clothes',
-            'POST',
-            JSON.stringify({
-              title: formState.inputs.title.value,
-              size: formState.inputs.size.value,
-              price: formState.inputs.price.value,
-              description: formState.inputs.description.value,
-              address: formState.inputs.address.value,
-              creator: auth.userId
-            }),
-            { 'Content-Type': 'application/json' }
-          );
+          const formData = new FormData();
+          formData.append('title', formState.inputs.title.value);
+          formData.append('size', formState.inputs.size.value);
+          formData.append('price', formState.inputs.price.value);
+          formData.append('description', formState.inputs.description.value);
+          formData.append('address', formState.inputs.address.value);
+          formData.append('creator', auth.userId);
+          formData.append('image', formState.inputs.image.value);
+          await sendRequest('http://localhost:5000/api/clothes', 'POST', formData);
           history.push('/');
         } catch (err) {}
       }; 
@@ -109,6 +110,10 @@ return (
           label="Address"
           validators={[VALIDATOR_REQUIRE()]}
           errorText="Please enter address."
+          onInput={inputHandler}
+        />
+        <UploadImg
+          id="image"
           onInput={inputHandler}
         />
       <Button type="submit" disabled={!formState.isValid}>

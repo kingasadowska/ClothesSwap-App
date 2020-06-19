@@ -4,57 +4,57 @@ import Button from '../Buttons/Button';
 import './UploadImg.css';
 
 const UploadImg = props => {
-  const [image, setImage] = useState();
+  const [file, setImage] = useState();
   const [previewUrl, setPreviewUrl] = useState();
   const [isValid, setIsValid] = useState(false);
-  const imagePickerRef = useRef();
+  const filePickerRef = useRef();
 
   useEffect(() => {
-    if (!image) {
+    if (!file) {
       return;
     }
-    const imageReader = new FileReader();
-    imageReader.onload = () => {
-      setPreviewUrl(imageReader.result);
+    const fileReader = new FileReader();
+    fileReader.onload = () => {
+      setPreviewUrl(fileReader.result);
     };
-    imageReader.readAsDataURL(image);
-  }, [image]);
+    fileReader.readAsDataURL(file);
+  }, [file]);
 
   const pickedHandler = event => {
     let pickedImage;
-    let imageIsValid = isValid;
-    if (event.target.images && event.target.images.length === 1) {
-      pickedImage = event.target.images[0];
+    let fileIsValid = isValid;
+    if (event.target.files && event.target.files.length === 1) {
+      pickedImage = event.target.files[0];
       setImage(pickedImage);
       setIsValid(true);
-      imageIsValid = true;
+      fileIsValid = true;
     } else {
       setIsValid(false);
-      imageIsValid = false;
+      fileIsValid = false;
     }
-    props.onInput(props.id, pickedImage, imageIsValid);
+    props.onInput(props.id, pickedImage, fileIsValid);
   };
 
   const pickImageHandler = () => {
-    imagePickerRef.current.click();
+    filePickerRef.current.click();
   };
 
   return (
     <div className="form-control">
-      <input
+    <input
         id={props.id}
-        ref={imagePickerRef}
+        ref={filePickerRef}
         style={{ display: 'none' }}
-        type="image"
+        type="file"
         accept=".jpg,.png,.jpeg"
         onChange={pickedHandler}
       />
       <div className={`upload-img ${props.center && 'center'}`}>
         <div className="upload-img_prev">
         {previewUrl && <img src={previewUrl} alt="Preview" />}
-          {!previewUrl && <p>Please pick an image.</p>}
+          {!previewUrl && <p>Pick image.</p>}
         </div>
-        <Button type="button" onClick={pickImageHandler}>PICK IMAGE</Button>
+        <Button type="button" onClick={pickImageHandler}>UPLOAD IMAGE</Button>
       </div>
       {!isValid && <p>{props.errorText}</p>}
     </div>

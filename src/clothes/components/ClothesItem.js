@@ -1,5 +1,4 @@
 import React, { useState, useContext } from 'react';
-import './ClothesItem.css';
 import Card from '../../shared/components/UIElements/Card'; 
 import Button from '../../shared/components/Buttons/Button';
 import Modal from '../../shared/components/UIElements/Modal';
@@ -8,6 +7,7 @@ import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import Spinner from '../../shared/components/UIElements/Spinner';
 import { AuthContext } from '../../shared/context/auth-context';
 import { useHttpClient } from '../../shared/hooks/http-hook';
+import './ClothesItem.css';
 
 const ClothesItem = (props) => {
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
@@ -77,7 +77,7 @@ const ClothesItem = (props) => {
         <Card className="clothes-item_content">
         {isLoading && <Spinner asOverlay />}
           <div className="clothes-item_image">
-              <img src={props.image} alt={props.title} />
+              <img src={`http://localhost:5000/${props.image}`} alt={props.title} />
           </div>
           <div className="clothes-item_about">
               <h2>{props.title}</h2>
