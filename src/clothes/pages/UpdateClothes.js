@@ -92,7 +92,8 @@ const UpdateClothes = () => {
               description: formState.inputs.description.value
             }),
             {
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
+              Authorization: 'Bearer ' + auth.token
             }
           );
           history.push('/' + auth.userId + '/clothes');
