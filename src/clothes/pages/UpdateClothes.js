@@ -49,7 +49,7 @@ const UpdateClothes = () => {
         const fetchClothes = async () => {
           try {
             const responseData = await sendRequest(
-              `http://localhost:5000/api/clothes/${clothesId}`
+              `${process.env.REACT_APP_BACKEND_URL}/clothes/${clothesId}`
             );
             setLoadedClothe(responseData.clothe);
             setFormData(
@@ -83,7 +83,7 @@ const UpdateClothes = () => {
         event.preventDefault();
         try {
           await sendRequest(
-            `http://localhost:5000/api/clothes/${clothesId}`,
+            `${process.env.REACT_APP_BACKEND_URL}/clothes/${clothesId}`,
             'PATCH',
             JSON.stringify({
               title: formState.inputs.title.value,

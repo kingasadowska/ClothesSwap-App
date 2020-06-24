@@ -31,7 +31,7 @@ const ClothesItem = (props) => {
     setOpenConfirmModal(false);
     try {
       await sendRequest(
-        `http://localhost:5000/api/clothes/${props.id}`,
+        process.env.REACT_APP_BACKEND_URL +`/clothes/${props.id}`,
         'DELETE',
         null, 
         {
@@ -81,7 +81,7 @@ const ClothesItem = (props) => {
         <Card className="clothes-item_content">
         {isLoading && <Spinner asOverlay />}
           <div className="clothes-item_image">
-              <img src={`http://localhost:5000/${props.image}`} alt={props.title} />
+              <img src={`${process.env.REACT_APP_ASSET_URL}/${props.image}`} alt={props.title} />
           </div>
           <div className="clothes-item_about">
               <h2>{props.title}</h2>
