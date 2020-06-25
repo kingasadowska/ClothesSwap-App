@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
-import Users from './user/pages/Users';
-import NewClothe from './clothes/pages/NewClothe';
 import NavBar from './shared/components/Navigation/NavBar';
-import UserClothes from './clothes/pages/UserClothes';
-import UpdateClothes from './clothes/pages/UpdateClothes';
-import Auth from './user/pages/Auth';
 import { AuthContext } from './shared/context/auth-context';
 import { useAuth } from './shared/hooks/auth-hook';
+import Spinner from './shared/components/UIElements/Spinner';
+
+const Users = React.lazy(() => import('./user/pages/Users'));
+const NewClothe = React.lazy(() => import('./clothes/pages/NewClothe'));
+const UserClothes = React.lazy(() => import('./clothes/pages/UpdateClothes'));
+const UpdateClothes = React.lazy(() => import('./clothes/pages/UpdateClothes'));
+const Auth = React.lazy(() => import('./user/pages/Auth'));
 
 const App = () => {
 const { token, login, logout, userId } = useAuth();
@@ -62,7 +64,13 @@ const { token, login, logout, userId } = useAuth();
       <Router>
         <NavBar />
         <main>
+          <Suspense fallback={
+            <div className="center">
+              <Spinner/>
+            </div>
+          }>
          {routes}
+         </Suspense>
         </main>
       </Router>
     </AuthContext.Provider>
